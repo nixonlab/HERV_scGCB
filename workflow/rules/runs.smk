@@ -49,4 +49,4 @@ rule sample_complete:
     input:
         rules.sra_download.output,
     output:
-        lambda wc: touch("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wc.samp_acc])
+        expand("samples/{s}/completed.txt", s=SAMPLES)
