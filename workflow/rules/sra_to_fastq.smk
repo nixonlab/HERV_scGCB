@@ -18,12 +18,11 @@ rule sra_to_fastq:
         tmpdir = config['tmpdir'],
         outdir = "runs/{run_acc}"
     threads: min(20, snakemake.utils.available_cpu_count())
+    log: "runs/{run_acc}/fasterq_sra_to_fastq.log"
     shell:
         """
         fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.rundir} {input} &> {log[0]}
         """
-    log:
-        "runs/{run_acc}/fasterq_sra_to_fastq.log"
 
 localrules: conversion_complete
 rule conversion_complete:
