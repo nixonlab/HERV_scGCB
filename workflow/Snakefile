@@ -20,6 +20,7 @@ with open(config['sra_run_table'], 'r') as csvfile:
     METADATA = [row for row in csv.DictReader(csvfile)]
 
 SAMPLES = [d[config['colname_SAMPLE']] for d in METADATA]
+RUNS = [d[config['colname_RUN']] for d in METADATA]
 
 SAMPLE_RUN = defaultdict(list)
 for d in METADATA:
@@ -29,6 +30,6 @@ for d in METADATA:
 localrules: all
 rule all:
     input:
-        expand("samples/{s}/completed.txt", s=SAMPLES)
+        expand("runs/{run_acc}/{run_acc}_1.fastq", run_acc=RUNS)
 
 include: "rules/runs.smk"

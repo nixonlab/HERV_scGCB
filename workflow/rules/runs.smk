@@ -8,15 +8,16 @@ localrules: sra_download
 
 rule sra_download:
     output:
-        "runs/{run_acc}/unmapped.bam"
+        "runs/{wildcards.run_acc}/{wildcards.run_acc}_1.fastq",
+        "runs/{wildcards.run_acc}/{wildcards.run_acc}_2.fastq"
     log:
-        "runs/{run_acc}/fasterq-dump.log"
+        "runs/{wildcards.run_acc}/fasterq-dump.log"
     params:
         keyfile = config['dbgap_key'] if 'dbgap_key' in config else 'nonexistent',
         tmpdir = config['tmpdir'],
-        rundir = "runs/{run_acc}"
+        rundir = "runs/{wildcards.run_acc}"
     conda:
-        "envs/utils.yaml"
+        "../envs/utils.yaml"
     threads: min(20, snakemake.utils.available_cpu_count())
     shell:
         '''
@@ -28,7 +29,7 @@ rule sra_download:
               -e {threads}\
               -t {params.tmpdir}\
               -O {params.rundir}\
-              {run_acc}\
+              {wildcards.run_acc}\
             &> {log[0]}
         else
             CDIR=$PWD
@@ -37,16 +38,14 @@ rule sra_download:
             fasterq-dump\
               -e {threads}\
               -t {params.tmpdir}\
-              {run_acc}\
+              {wildcards.run_acc}\
             &> $CDIR/{log[0]}
             cd $CDIR
-            mv $NCBIDIR/{run_acc}* {params.rundir}/
+            mv $NCBIDIR/{wildcards.run_acc}* {params.rundir}/
         fi
         '''
 
 localrules: sample_complete
 rule sample_complete:
     input:
-        rules.sra_download.output,
-    output:
-        expand("samples/{s}/completed.txt", s=SAMPLES)
+        expand("runs/{run_acc}/{run_acc}_1.fastq", run_acc=RUNS)
