@@ -6,16 +6,18 @@ Download data from SRA
 """
 localrules: sra_download
 
+print('here')
+
 rule sra_download:
     output:
-        "runs/{wildcards.run_acc}/{wildcards.run_acc}_1.fastq",
-        "runs/{wildcards.run_acc}/{wildcards.run_acc}_2.fastq"
+        "runs/{run_acc}/{run_acc}_1.fastq",
+        "runs/{run_acc}/{run_acc}_2.fastq"
     log:
-        "runs/{wildcards.run_acc}/fasterq-dump.log"
+        "runs/{run_acc}/fasterq-dump.log"
     params:
         keyfile = config['dbgap_key'] if 'dbgap_key' in config else 'nonexistent',
         tmpdir = config['tmpdir'],
-        rundir = "runs/{wildcards.run_acc}"
+        rundir = "runs/{run_acc}"
     conda:
         "../envs/utils.yaml"
     threads: min(20, snakemake.utils.available_cpu_count())
