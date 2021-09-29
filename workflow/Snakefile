@@ -1,18 +1,37 @@
-# The main entry point of your workflow.
-# After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
+#! /usr/bin/env python
+from future import standard_library
+standard_library.install_aliases()
+
+import os
+import csv
+import requests
+from subprocess import check_output
+from collections import defaultdict
 
 
-report: "report/workflow.rst"
+wildcard_constraints:
+    proj_acc = "[SED]RP[0-9]{6,9}",
+    exp_acc  = "[SED]RX[0-9]{6,9}",
+    samp_acc = "[SED]RS[0-9]{6,9}",
+    run_acc  = "[SED]RR[0-9]{6,9}"
 
-# Allow users to fix the underlying OS via singularity.
-singularity: "docker://continuumio/miniconda3"
+configfile: "config.yaml"
+
+with open(config['sra_run_table'], 'r') as csvfile:
+    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+    csvfile.seek(0)
+    METADATA = [row for row in csv.DictReader(csvfile)]
+
+SAMPLES = [d[config['colname_SAMPLE']] for d in METADATA]
+
+SAMPLE_RUN = defaultdict(list)
+for d in METADATA:
+    SAMPLE_RUN[d[config['colname_SAMPLE']]].append(d[config['colname_RUN']])
 
 
+localrules: all
 rule all:
     input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
+        expand("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wildcards.samp_acc])
 
-
-include: "rules/common.smk"
-include: "rules/other.smk"
+include: "runs.smk"

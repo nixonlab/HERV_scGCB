@@ -1,4 +1,17 @@
-# This file should contain everything to configure the workflow on a global scale.
-# In case of sample based data, it should be complemented by a samples.tsv file that contains
-# one row per sample. It can be parsed easily via pandas.
-samples: "config/samples.tsv"
+# Path to file containing run-level metadata
+# Usually it is a table from SRA Run Selector
+sra_run_table: "config/SraRunTable.txt"
+
+# Column names for sample and run
+colname_SAMPLE: "BioSample"
+colname_RUN: "Run"
+
+# Path to key for dbGaP protected files
+# Set to null if not using protected files
+dbgap_key: null
+
+# Location for SRA URL.
+# Typical options are "ncbi", "s3.us-east-1", "gs.US", etc.
+sra_location: "ncbi"
+
+tmpdir: "/scratch"
