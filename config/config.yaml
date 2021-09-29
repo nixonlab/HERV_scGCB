@@ -15,3 +15,7 @@ dbgap_key: null
 sra_location: "ncbi"
 
 tmpdir: "/scratch"
+
+# SRA to fastq rule input 
+
+indir: "/fsx/projects/GCB_FASTQ/{run_acc}/{run_acc}.sra"

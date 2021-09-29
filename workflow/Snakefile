@@ -26,7 +26,7 @@ SAMPLE_RUN = defaultdict(list)
 for d in METADATA:
     SAMPLE_RUN[d[config['colname_SAMPLE']]].append(d[config['colname_RUN']])
 
-include: "rules/runs.smk"
+include: "rules/sra_to_fastq.smk"
 
 localrules: all
 rule all:
