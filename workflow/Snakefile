@@ -29,6 +29,6 @@ for d in METADATA:
 localrules: all
 rule all:
     input:
-        lambda wc: expand("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wc.samp_acc])
+        expand("samples/{s}/completed.txt", s=SAMPLES)
 
 include: "rules/runs.smk"
