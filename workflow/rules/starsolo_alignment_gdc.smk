@@ -12,10 +12,8 @@ rule starsolo_alignment:
 	Align sequencing reads from a 10x V3 single-cell RNA-seq experiment using STARsolo
 	"""
 	input:
-		cDNA_L1 = "data/{dataset}/{sample}_S1_L001_R2_001.fastq.gz",
-		cDNA_L2 = "data/{dataset}/{sample}_S1_L002_R2_001.fastq.gz",
-		barcode_L1 = "data/{dataset}/{sample}_S1_L001_R1_001.fastq.gz",
-		barcode_L2 = "data/{dataset}/{sample}_S1_L002_R1_001.fastq.gz",
+		cDNA = "data/{dataset}/{sample}_S1_L001_R2_001.fastq.gz",
+		barcodes = "data/{dataset}/{sample}_S1_L001_R1_001.fastq.gz",
 		genome = "databases/star_index_GDCHG38_gencode38",
 		whitelist = "resources/whitelist/3M-february-2018.txt"
 	output:
@@ -36,7 +34,7 @@ rule starsolo_alignment:
 		STAR\
 			--runThreadN {threads}\
 			--genomeDir {input.genome}\
-			--readFilesIn {input.cDNA_L1},{input.cDNA_L2} {input.barcode_L1},{input.barcode_L2}\
+			--readFilesIn {input.cDNA} {input.barcodes}\
 			--readFilesCommand gunzip -c\
 			--soloType CB_UMI_Simple\
 			--soloCBwhitelist {input.whitelist}\
