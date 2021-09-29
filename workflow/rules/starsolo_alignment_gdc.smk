@@ -7,15 +7,17 @@
 ## a scheme to name output directories
 ## see if I can integrate PEP here
 
+rule decompress_whitelist:
+
 rule starsolo_alignment:
 	"""
 	Align sequencing reads from a 10x V3 single-cell RNA-seq experiment using STARsolo
 	"""
 	input:
-		cDNA = "data/{dataset}/{sample}_S1_L001_R2_001.fastq.gz",
-		barcodes = "data/{dataset}/{sample}_S1_L001_R1_001.fastq.gz",
+		cDNA = "data/{dataset}/{sample}_R2_001.fastq.gz",
+		barcodes = "data/{dataset}/{sample}_R1_001.fastq.gz",
 		genome = "databases/star_index_GDCHG38_gencode38",
-		whitelist = "resources/whitelist/3M-february-2018.txt"
+		whitelist_gz = "databases/remotefiles/whitelist.10x.v3.gz"
 	output:
 		"results/{dataset}/{sample}_GDC38.Aligned.sortedByCoord.out.bam"
 	params:
@@ -27,9 +29,11 @@ rule starsolo_alignment:
 		max_multimap=config["max_multimap"]
 	conda:
 		"../envs/star.yaml"
-	threads: 18
+	threads: worflow.cores
 	shell:
 		'''
+		pigz {input.whitelist_gz}
+	
 		#--- STARsolo (turned on by --soloType CB_UMI_Simple)
 		STAR\
 			--runThreadN {threads}\
@@ -37,7 +41,7 @@ rule starsolo_alignment:
 			--readFilesIn {input.cDNA} {input.barcodes}\
 			--readFilesCommand gunzip -c\
 			--soloType CB_UMI_Simple\
-			--soloCBwhitelist {input.whitelist}\
+			--soloCBwhitelist databases/remotefiles/whitelist.10x.v3\
 			--soloCBstart {params.cb_start}\
 			--soloCBlen {params.cb_length}\
 			--soloUMIstart {params.umi_start}\
