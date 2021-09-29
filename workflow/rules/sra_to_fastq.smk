@@ -21,7 +21,7 @@ rule sra_to_fastq:
     log: "runs/{run_acc}/fasterq_sra_to_fastq.log"
     shell:
         """
-        fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.rundir} {input} &> {log[0]}
+        fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.outdir} {input} &> {log[0]}
         """
 
 localrules: conversion_complete
