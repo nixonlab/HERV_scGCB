@@ -1,7 +1,4 @@
 #! /usr/bin/env python
-from future import standard_library
-standard_library.install_aliases()
-
 import os
 import csv
 import requests
@@ -15,7 +12,7 @@ wildcard_constraints:
     samp_acc = "[SED]RS[0-9]{6,9}",
     run_acc  = "[SED]RR[0-9]{6,9}"
 
-configfile: "config.yaml"
+configfile: "config/config.yaml"
 
 with open(config['sra_run_table'], 'r') as csvfile:
     dialect = csv.Sniffer().sniff(csvfile.read(1024))
@@ -32,6 +29,6 @@ for d in METADATA:
 localrules: all
 rule all:
     input:
-        expand("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wildcards.samp_acc])
+        lambda wc: expand("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wc.samp_acc])
 
-include: "runs.smk"
+include: "rules/runs.smk"

@@ -28,7 +28,7 @@ rule sra_download:
               -e {threads}\
               -t {params.tmpdir}\
               -O {params.rundir}\
-              {wildcards.run_acc}\
+              {run_acc}\
             &> {log[0]}
         else
             CDIR=$PWD
@@ -37,10 +37,10 @@ rule sra_download:
             fasterq-dump\
               -e {threads}\
               -t {params.tmpdir}\
-              {wildcards.run_acc}\
+              {run_acc}\
             &> $CDIR/{log[0]}
             cd $CDIR
-            mv $NCBIDIR/{wildcards.run_acc}* {params.rundir}/
+            mv $NCBIDIR/{run_acc}* {params.rundir}/
         fi
         '''
 
@@ -49,4 +49,4 @@ rule sample_complete:
     input:
         rules.sra_download.output,
     output:
-        touch("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wildcards.samp_acc])
+        lambda wc: touch("runs/{run_acc}/completed.txt", run_acc=SAMPLE_RUN[wc.samp_acc])
