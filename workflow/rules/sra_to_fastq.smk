@@ -20,7 +20,7 @@ rule sra_to_fastq:
     threads: min(20, snakemake.utils.available_cpu_count())
     shell:
         """
-        fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.rundir} --split-3 {input} &> {log[0]}
+        fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.rundir} {input} &> {log[0]}
         """
     log:
         "runs/{run_acc}/fasterq_sra_to_fastq.log"
