@@ -29,7 +29,7 @@ rule starsolo_alignment:
 		max_multimap=config["max_multimap"]
 	conda:
 		"../envs/star.yaml"
-	threads: worflow.cores
+	threads: workflow.cores
 	shell:
 		'''
 		pigz {input.whitelist_gz}
