@@ -27,8 +27,12 @@ for d in METADATA:
     SAMPLE_RUN[d[config['colname_SAMPLE']]].append(d[config['colname_RUN']])
 
 include: "rules/sra_to_fastq.smk"
+include: "rules/download_remote.smk"
+include: "rules/star_index_gdc38_gencode38.smk"
+include: "rules/starsolo_alignment_gdc.smk"
 
 localrules: all
 rule all:
     input:
-        expand("runs/{run_acc}/{run_acc}_1.fastq", run_acc=RUNS)
+        expand("results/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam", run_acc=RUNS)
+
