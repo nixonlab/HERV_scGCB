@@ -5,8 +5,6 @@
 Convert SRA files to fastq
 """
 
-localrules: sra_to_fastq
-
 rule sra_to_fastq:
     conda:
         "../envs/utils.yaml"
@@ -24,7 +22,6 @@ rule sra_to_fastq:
         fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.outdir} {input} &> {log[0]}
         """
 
-localrules: conversion_complete
 rule conversion_complete:
     input:
         expand("runs/{run_acc}/{run_acc}_1.fastq", run_acc=RUNS)
