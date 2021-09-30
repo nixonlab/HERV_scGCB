@@ -15,7 +15,7 @@ rule starsolo_alignment:
 	"""
 	input:
 		cDNA = "runs/{run_acc}/{run_acc}_2.fastq",
-		barcodes = "runs/{run_acc}/{run_acc}_1.fastq"
+		barcodes = "runs/{run_acc}/{run_acc}_1.fastq",
 		genome = "databases/star_index_GDCHG38_gencode38",
 		whitelist_gz = "databases/remotefiles/whitelist.10x.v3.gz"
 	output:
