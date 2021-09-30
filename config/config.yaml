@@ -35,6 +35,8 @@ remotefiles:
 # STAR genome index parameters
 splice_junction_overhang: 74
 
+local_tmp: "/scratch"
+
 # STAR alignment parameters
 cellbarcode_start: 1
 cellbarcode_length: 16
