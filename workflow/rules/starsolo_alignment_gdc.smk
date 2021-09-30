@@ -17,7 +17,7 @@ rule starsolo_alignment:
 		cDNA = "runs/{run_acc}/{run_acc}_2.fastq",
 		barcodes = "runs/{run_acc}/{run_acc}_1.fastq",
 		genome = "databases/star_index_GDCHG38_gencode38",
-		whitelist_gz = "databases/remotefiles/whitelist.10x.v3.gz"
+		whitelist_gz = "databases/remotefiles/whitelist.10x.v3.txt.gz"
 	output:
 		"results/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam"
 	params:
@@ -32,7 +32,7 @@ rule starsolo_alignment:
 	threads: workflow.cores
 	shell:
 		'''
-		pigz {input.whitelist_gz}
+		gunzip {input.whitelist_gz}
 	
 		#--- STARsolo (turned on by --soloType CB_UMI_Simple)
 		STAR\
@@ -41,7 +41,7 @@ rule starsolo_alignment:
 			--readFilesIn {input.cDNA} {input.barcodes}\
 			--readFilesCommand gunzip -c\
 			--soloType CB_UMI_Simple\
-			--soloCBwhitelist databases/remotefiles/whitelist.10x.v3\
+			--soloCBwhitelist databases/remotefiles/whitelist.10x.v3.txt\
 			--soloCBstart {params.cb_start}\
 			--soloCBlen {params.cb_length}\
 			--soloUMIstart {params.umi_start}\
