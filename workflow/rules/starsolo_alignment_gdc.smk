@@ -7,11 +7,11 @@
 ## a scheme to name output directories
 ## see if I can integrate PEP here
 
-rule decompress_whitelist:
-	input: "databases/remotefiles/whitelist.10x.v3.txt.gz"
-	output: "databases/remotefiles/whitelist.10x.v3.txt"
-	shell:
-		"gunzip {input}"
+#rule decompress_whitelist:
+#	input: "databases/remotefiles/whitelist.10x.v2.txt.gz"
+#	output: "databases/remotefiles/whitelist.10x.v2.txt"
+#	shell:
+#		"gunzip {input}"
 
 rule starsolo_alignment:
 	"""
@@ -21,7 +21,7 @@ rule starsolo_alignment:
 		cDNA = "runs/{run_acc}/{run_acc}_2.fastq",
 		barcodes = "runs/{run_acc}/{run_acc}_1.fastq",
 		genome = "databases/star_index_GDCHG38_gencode38",
-		whitelist = "databases/remotefiles/whitelist.10x.v3.txt"
+		whitelist = "databases/remotefiles/whitelist.10x.v2.txt"
 	output:
 		"results/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam"
 	params:
@@ -41,7 +41,6 @@ rule starsolo_alignment:
 			--runThreadN {threads}\
 			--genomeDir {input.genome}\
 			--readFilesIn {input.cDNA} {input.barcodes}\
-			--readFilesCommand gunzip -c\
 			--soloType CB_UMI_Simple\
 			--soloCBwhitelist {input.whitelist}\
 			--soloCBstart {params.cb_start}\
