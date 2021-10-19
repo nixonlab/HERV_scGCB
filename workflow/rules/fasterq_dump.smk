@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Convert SRA files to fastq
+Download FASTQs
 """
 
-rule sra_to_fastq:
+rule fasterq_dump:
     conda:
         "../envs/utils.yaml"
     output:
         "runs/{run_acc}/{run_acc}_1.fastq",
         "runs/{run_acc}/{run_acc}_2.fastq"
-    input: config['indir']
     params:
         tmpdir = config['tmpdir'],
         outdir = "runs/{run_acc}"
@@ -19,7 +18,7 @@ rule sra_to_fastq:
     log: "runs/{run_acc}/fasterq_sra_to_fastq.log"
     shell:
         """
-        fasterq-dump -e {threads} --temp {params.tmpdir} --outdir {params.outdir} {input} &> {log[0]}
+        fasterq-dump -e {threads} --temp {params.tmpdir} -O {params.outdir} {wildcards.run_acc} &> {log[0]}
         """
 
 rule conversion_complete:

@@ -14,9 +14,9 @@ dbgap_key: null
 # Typical options are "ncbi", "s3.us-east-1", "gs.US", etc.
 sra_location: "ncbi"
 
-tmpdir: "/scratch"
+tmpdir: "$TMPDIR"
 
-# SRA to fastq rule input 
+# SRA to fastq rule input
 
 indir: "/fsx/projects/GCB_FASTQ/{run_acc}/{run_acc}.sra"
 
@@ -29,13 +29,13 @@ remotefiles:
     url: "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz"
     md5: "16fcae8ca8e488cd8056cf317d963407"
   whitelist.10x.v2.txt:
-    url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt" 
-    md5: "f62a276e262fdd85262a889d0f48556b" 
+    url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt"
+    md5: "f62a276e262fdd85262a889d0f48556b"
 
 # STAR genome index parameters
 splice_junction_overhang: 74
 
-local_tmp: "/scratch"
+local_tmp: "$TMPDIR"
 
 # STAR alignment parameters
 cellbarcode_start: 1
@@ -43,4 +43,3 @@ cellbarcode_length: 16
 umi_start: 17
 umi_length: 10
 max_multimap: 500
-
