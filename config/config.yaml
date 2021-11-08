@@ -28,11 +28,11 @@ downloads:
     url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt"
     md5: "f62a276e262fdd85262a889d0f48556b"
   retro.hg38.v1.gtf:
-      url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/transcripts.gtf"
-      md5: "c07cf115c1f957b3020efc547f3847fa"
+    url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/transcripts.gtf"
+    md5: "c07cf115c1f957b3020efc547f3847fa"
   retro.hg38.v1.tsv.gz:
-      url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
-      md5: "b3ca6d3705d030742255d216e25dfc1d"
+    url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
+    md5: "b3ca6d3705d030742255d216e25dfc1d"
 
 sequences:
     genome: "refs/sequences/genome.fa.gz"
