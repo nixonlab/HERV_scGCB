@@ -20,11 +20,6 @@ rule stellarscope:
         """
         tdir=$(mktemp -d {config[local_tmp]}/{rule}.{wildcards.s}.XXXXXX)
         telescope sc assign\
-         --exp_tag inform\
-         --theta_prior 200000\
-         --max_iter 200\
-         --updated_sam\
-         --outdir $tdir\
          {input[0]}\
          {input[1]}\
          2>&1 | tee {log[0]}
@@ -32,6 +27,7 @@ rule stellarscope:
         mv $tdir/inform-updated.bam {output[1]}
         mv $tdir/inform-other.bam {output[2]}
         chmod 660 {output[1]}
+        chmod 660 {output[2]}
         rm -rf $tdir
         """
 
