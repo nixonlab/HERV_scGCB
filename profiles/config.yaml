@@ -4,17 +4,18 @@ cluster:
     --partition={resources.partition}
     --cpus-per-task={threads}
     --job-name=smk-{rule}-{wildcards}
-    --output=logs/{rule}/{rule}-{wildcards}-%j.out
+    --mem={resources.mem_mb}
+    --output=logs/{rule}/{rule}-{wildcards.s}-%j.out
     --nodes=1
 default-resources:
-  - partition=defq
+  - partition=panda
   - qos=0
   - nodes=1
-cores: 24
-restart-times: 1
+cores: 32
+restart-times: 0
 max-jobs-per-second: 1
 max-status-checks-per-second: 10
-local-cores: 4
+local-cores: 8
 latency-wait: 60
 jobs: 10000
 keep-going: True
