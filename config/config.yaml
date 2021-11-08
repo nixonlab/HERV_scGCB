@@ -6,7 +6,7 @@ sra_run_table: "config/SraRunTable.txt"
 colname_SAMPLE: "BioSample"
 colname_RUN: "Run"
 
-# Path to key for dbGaP protected files
+# Path to key for dbGaP protected files.
 # Set to null if not using protected files
 dbgap_key: null
 
@@ -15,10 +15,6 @@ dbgap_key: null
 sra_location: "ncbi"
 
 tmpdir: "$TMPDIR"
-
-# SRA to fastq rule input
-
-indir: "/fsx/projects/GCB_FASTQ/{run_acc}/{run_acc}.sra"
 
 # Remote databases or resources to be downloaded
 remotefiles:
@@ -31,10 +27,35 @@ remotefiles:
   whitelist.10x.v2.txt:
     url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt"
     md5: "f62a276e262fdd85262a889d0f48556b"
+  retro.hg38.v1.gtf:
+      url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/transcripts.gtf"
+      md5: "c07cf115c1f957b3020efc547f3847fa"
+  retro.hg38.v1.tsv.gz:
+      url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
+      md5: "b3ca6d3705d030742255d216e25dfc1d"
+
+sequences:
+    genome: "refs/sequences/genome.fa.gz"
+    genome_idx: "refs/sequences/genome.fa.gz.fai"
+    genome_dict: "refs/sequences/genome.dict"
+    transcripts: "refs/sequences/transcripts.fa"
+    transcripts_list: "refs/sequences/transcripts_list.txt"
+    transcripts_dupinfo: "refs/sequences/dupinfo.txt"
+
+indexes:
+    star: "refs/index.star/genome"
+
+annotations:
+    gencode: "refs/downloads/gencode.v38.annotation.gtf.gz"
+    retro: "refs/annotation/retro.gtf"
+    retro_tsv: "refs/annotation/retro.tsv"
+    ttg: "refs/annotation/ttg.tsv"
+    gsym: "refs/annotation/gsym.tsv"
 
 # STAR genome index parameters
 splice_junction_overhang: 74
-
+star_index_threads: 32
+star_index_mem_mb: 40000
 local_tmp: "$TMPDIR"
 
 # STAR alignment parameters
@@ -43,3 +64,7 @@ cellbarcode_length: 16
 umi_start: 17
 umi_length: 10
 max_multimap: 500
+star_alignment_threads: 32
+
+# TELESCOPE
+telescope_threads: 2

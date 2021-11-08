@@ -17,25 +17,26 @@ rule starsolo_alignment:
 	"""
 	Align sequencing reads from a 10x V3 single-cell RNA-seq experiment using STARsolo
 	"""
+	conda:
+		"../envs/star.yaml"
 	input:
 		cDNA = "runs/{run_acc}/{run_acc}_2.fastq",
 		barcodes = "runs/{run_acc}/{run_acc}_1.fastq",
-		genome = "databases/star_index_GDCHG38_gencode38",
-		whitelist = "databases/remotefiles/whitelist.10x.v2.txt"
+		genome = config['indexes']['star'],
+		whitelist = "refs/downloads/whitelist.10x.v2.txt"
 	output:
-		"results/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam"
+		"results/starsolo_algn/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam"
 	params:
-		out_prefix="results/{run_acc}/{run_acc}_GDC38.",
+		out_prefix="results/starsolo_algn/{run_acc}/{run_acc}_GDC38.",
 		cb_start=config["cellbarcode_start"],
 		cb_length=config["cellbarcode_length"],
 		umi_start=config["umi_start"],
 		umi_length=config["umi_length"],
 		max_multimap=config["max_multimap"]
-	conda:
-		"../envs/star.yaml"
-	threads: workflow.cores
+    benchmark: "benchmarks/star_alignment/{run_acc}_star_alignment.tsv"
+	threads: config['star_alignment_threads']
 	shell:
-		'''	
+		'''
 		#--- STARsolo (turned on by --soloType CB_UMI_Simple)
 		STAR\
 			--runThreadN {threads}\

@@ -4,8 +4,33 @@
 rule stellarscope:
     conda: "../envs/telescope.yaml"
     output:
+        "results/telescope/{run_acc}/{run_acc}_telescope.report.tsv",
+        "results/telescope/{run_acc}/{run_acc}_telescope.updated.bam",
+        "results/telescope/{run_acc}/{run_acc}_telescope.other.bam"
     input:
-    benchmark:
+        bam = "results/starsolo_algn/{run_acc}/{run_acc}_GDC38.Aligned.sortedByCoord.out.bam",
+        annotation = rules.telescope_annotation.output
+    benchmark: "benchmarks/telescope/{run_acc}_telescope.tsv"
     log:
+        "results/telescope/{run_acc}/telescope.log"
+    threads: config['telescope_threads']
     params:
-    shell: 
+        tmpdir = config['local_tmp']
+    shell:
+        """
+        tdir=$(mktemp -d {config[local_tmp]}/{rule}.{wildcards.s}.XXXXXX)
+        telescope sc assign\
+         --exp_tag inform\
+         --theta_prior 200000\
+         --max_iter 200\
+         --updated_sam\
+         --outdir $tdir\
+         {input[0]}\
+         {input[1]}\
+         2>&1 | tee {log[0]}
+        mv $tdir/inform-TE_counts.tsv {output[0]}
+        mv $tdir/inform-updated.bam {output[1]}
+        mv $tdir/inform-other.bam {output[2]}
+        chmod 660 {output[1]}
+        rm -rf $tdir
+        """

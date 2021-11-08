@@ -1,28 +1,32 @@
+#! /usr/bin/env python
+# -*- coding utf-8 -*-
+
 rule star_index_gdc38_gencode38:
-    input:
-        fasta_gz = 'databases/remotefiles/GRCh38.d1.vd1.fa.tar.gz',
-        gtf_gz = 'databases/remotefiles/gencode.v38.annotation.gtf.gz'
-    output:
-        directory("databases/star_index_GDCHG38_gencode38")
-    params:
-        sjdbOverhang = config['splice_junction_overhang']
     conda:
         "../envs/star.yaml"
-    threads: workflow.cores
+    input:
+        genome = config['sequences']['genome'],
+        annotation_gtf_gz = config['annotations']['gencode']
+    output:
+        directory(config['indexes']['star'])
+    params:
+        sjdbOverhang = config['splice_junction_overhang']
+    threads: config['star_index_threads']
+    resources:
+        mem_mb=config['star_index_mem_mb']
     shell:
-        '''
+        """
         tdir=$(mktemp -d {config[local_tmp]}/{rule}.XXXXXX)
 
-        tar -xvzf {input.fasta_gz} -C $tdir
-
-	pigz -dc {input.gtf_gz} > $tdir/gencode.v38.annotation.gtf
+        pigz -dc {input.annotation_gtf_gz} > $tdir/gencode.v38.annotation.gtf
+        pigz -dc {input.genome} > $tdir/genome.fa
 
         STAR\
             --runThreadN {threads}\
             --runMode genomeGenerate\
             --genomeDir {output}\
             --outFileNamePrefix {output}\
-            --genomeFastaFiles $tdir/GRCh38.d1.vd1.fa\
+            --genomeFastaFiles $tdir/genome.fa\
             --sjdbGTFfile $tdir/gencode.v38.annotation.gtf\
             --sjdbOverhang {params.sjdbOverhang}
-            '''
+        """
