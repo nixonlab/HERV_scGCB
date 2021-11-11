@@ -52,8 +52,10 @@ annotations:
     ttg: "refs/annotation/ttg.tsv"
     gsym: "refs/annotation/gsym.tsv"
 
-# samtools collate parameters
+# fasterq dump parameters
+fasterq_dump_tmp: "/athena/nixonlab/scratch/projects/HERV_scGCB/runs/{s}"
 
+# samtools collate parameters
 samtools_collate_threads: 32
 
 # STAR genome index parameters

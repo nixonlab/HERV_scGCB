@@ -5,6 +5,12 @@
 Download FASTQs
 """
 
+rule prefetch:
+    conda:
+        "../envs/utils/yaml"
+    output: "runs/{s}/{s}.sra"
+
+
 rule fasterq_dump:
     conda:
         "../envs/utils.yaml"
@@ -12,11 +18,11 @@ rule fasterq_dump:
         "runs/{s}/{s}_1.fastq",
         "runs/{s}/{s}_2.fastq"
     params:
-        tmpdir = config['tmpdir'],
+        tmpdir = config['fasterq_dump_tmp'],
         outdir = "runs/{s}"
     threads: 8
     resources:
-        mem_mb = 10000, disk_mb = 60000 
+        mem_mb = 10000, disk_mb = 60000
     log: "runs/{s}/fasterq_sra_to_fastq.log"
     shell:
         """
