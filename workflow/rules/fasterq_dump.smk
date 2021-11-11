@@ -5,12 +5,6 @@
 Download FASTQs
 """
 
-rule prefetch:
-    conda:
-        "../envs/utils/yaml"
-    output: "runs/{s}/{s}.sra"
-
-
 rule fasterq_dump:
     conda:
         "../envs/utils.yaml"
