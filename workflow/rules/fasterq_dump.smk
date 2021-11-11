@@ -14,7 +14,9 @@ rule fasterq_dump:
     params:
         tmpdir = config['tmpdir'],
         outdir = "runs/{s}"
-    threads: 32
+    threads: 8
+    resources:
+        mem_mb = 10000, disk_mb = 60000 
     log: "runs/{s}/fasterq_sra_to_fastq.log"
     shell:
         """
