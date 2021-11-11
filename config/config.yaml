@@ -52,6 +52,10 @@ annotations:
     ttg: "refs/annotation/ttg.tsv"
     gsym: "refs/annotation/gsym.tsv"
 
+# samtools collate parameters
+
+samtools_collate_threads: 32
+
 # STAR genome index parameters
 splice_junction_overhang: 74
 star_index_threads: 32

@@ -8,7 +8,7 @@ rule stellarscope:
         "results/telescope/{s}/{s}_telescope.updated.bam",
         "results/telescope/{s}/{s}_telescope.other.bam"
     input:
-        bam = "results/starsolo_algn/{s}/{s}_GDC38.Aligned.sortedByCoord.out.bam",
+        bam = "results/starsolo_algn/{s}/{s}_GDC38.collated.out.bam",
         annotation = rules.telescope_annotation.output
     benchmark: "benchmarks/telescope/{s}_telescope.tsv"
     log:

@@ -7,12 +7,6 @@
 ## a scheme to name output directories
 ## see if I can integrate PEP here
 
-#rule decompress_whitelist:
-#    input: "databases/remotefiles/whitelist.10x.v2.txt.gz"
-#    output: "databases/remotefiles/whitelist.10x.v2.txt"
-#    shell:
-#        "gunzip {input}"
-
 rule starsolo_alignment:
     """
     Align sequencing reads from a 10x V3 single-cell RNA-seq experiment using STARsolo
@@ -52,4 +46,18 @@ rule starsolo_alignment:
             --outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM\
             --outSAMtype BAM SortedByCoordinate\
             --outFileNamePrefix {params.out_prefix}
+        '''
+
+rule samtools_collate:
+    conda: "../envs/utils.yaml"
+    output: "results/starsolo_algn/{s}/{s}_GDC38.collated.out.bam"
+    input: "results/starsolo_algn/{s}/{s}_GDC38.Aligned.sortedByCoord.out.bam"
+    benchmark: "benchmarks/samtools_collate/{s}_samtools_collate.tsv"
+    threads: config['samtools_collate_threads']
+    shell:
+        '''
+        samtools collate\
+        {input}\
+        -o {output}
+        -@ {threads}
         '''
