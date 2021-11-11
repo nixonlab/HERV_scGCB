@@ -14,7 +14,7 @@ rule fasterq_dump:
     params:
         tmpdir = config['tmpdir'],
         outdir = "runs/{s}"
-    threads: min(20, snakemake.utils.available_cpu_count())
+    threads: 32
     log: "runs/{s}/fasterq_sra_to_fastq.log"
     shell:
         """
