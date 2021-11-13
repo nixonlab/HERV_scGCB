@@ -5,7 +5,7 @@ cluster:
     --cpus-per-task={threads}
     --job-name=smk-{rule}-{wildcards}
     --mem={resources.mem_mb}
-    --output=logs/{rule}/{rule}-{wildcards.s}-%j.out
+    --output=logs/{rule}/{rule}-{wildcards}-%j.out
     --nodes=1
 default-resources:
   - partition=panda

@@ -14,8 +14,8 @@ rule starsolo_alignment:
     conda:
         "../envs/star.yaml"
     input:
-        cDNA = "runs/{s}/{s}_2.fastq",
-        barcodes = "runs/{s}/{s}_1.fastq",
+        cDNA = "runs/{s}/{s}_2.fastq.gz",
+        barcodes = "runs/{s}/{s}_1.fastq.gz",
         genome = config['indexes']['star'],
         whitelist = "refs/downloads/whitelist.10x.v2.txt"
     output:
@@ -36,6 +36,7 @@ rule starsolo_alignment:
             --runThreadN {threads}\
             --genomeDir {input.genome}\
             --readFilesIn {input.cDNA} {input.barcodes}\
+            --readFilesCommand gunzip -c\
             --soloType CB_UMI_Simple\
             --soloCBwhitelist {input.whitelist}\
             --soloCBstart {params.cb_start}\

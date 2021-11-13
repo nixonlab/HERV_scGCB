@@ -23,6 +23,19 @@ rule fasterq_dump:
         fasterq-dump -e {threads} --temp {params.tmpdir} -O {params.outdir} {wildcards.s} &> {log[0]}
         """
 
+rule gzip:
+    output:
+        R1_in = "runs/{s}/{s}_1.fastq.gz",
+        R2_in = "runs/{s}/{s}_2.fastq.gz"
+    input:
+        R1_in = "runs/{s}/{s}_1.fastq",
+        R2_in = "runs/{s}/{s}_2.fastq"
+    shell:
+        """
+        gzip {input.R1_in}
+        gzip {input.R2_in}
+        """
+
 rule conversion_complete:
     input:
-        expand("runs/{s}/{s}_1.fastq", s=RUNS)
+        expand("runs/{s}/{s}_1.fastq.gz", s=RUNS)
