@@ -63,5 +63,5 @@ rule samtools_collate:
         {input}\
         -o {output}\
         -@ {threads}\
-        -T {params.tmpdir}
+        {params.tmpdir}
         '''
