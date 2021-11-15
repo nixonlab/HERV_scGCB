@@ -54,11 +54,14 @@ rule samtools_collate:
     output: "results/starsolo_algn/{s}/{s}_GDC38.collated.out.bam"
     input: "results/starsolo_algn/{s}/{s}_GDC38.Aligned.sortedByCoord.out.bam"
     benchmark: "benchmarks/samtools_collate/{s}_samtools_collate.tsv"
+    params:
+        tmpdir = config['fasterq_dump_tmp']
     threads: config['samtools_collate_threads']
     shell:
         '''
         samtools collate\
         {input}\
-        -o {output}
-        -@ {threads}
+        -o {output}\
+        -@ {threads}\
+        -T {params.tmpdir}
         '''
