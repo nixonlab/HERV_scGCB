@@ -18,17 +18,10 @@ rule stellarscope:
         tmpdir = config['local_tmp']
     shell:
         """
-        tdir=$(mktemp -d {config[local_tmp]}/{rule}.{wildcards.s}.XXXXXX)
         telescope sc assign\
          {input[0]}\
          {input[1]}\
          2>&1 | tee {log[0]}
-        mv $tdir/inform-TE_counts.tsv {output[0]}
-        mv $tdir/inform-updated.bam {output[1]}
-        mv $tdir/inform-other.bam {output[2]}
-        chmod 660 {output[1]}
-        chmod 660 {output[2]}
-        rm -rf $tdir
         """
 
 rule sample_complete:
