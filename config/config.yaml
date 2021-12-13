@@ -53,14 +53,14 @@ annotations:
     gsym: "refs/annotation/gsym.tsv"
 
 # fasterq dump parameters
-fasterq_dump_tmp: "/athena/nixonlab/scratch/projects/HERV_scGCB/runs/{s}"
+fasterq_dump_tmp: "$TMPDIR"
 
 # samtools collate parameters
-samtools_collate_threads: 32
+samtools_collate_threads: 24
 
 # STAR genome index parameters
 splice_junction_overhang: 74
-star_index_threads: 32
+star_index_threads: 24
 star_index_mem_mb: 40000
 local_tmp: "$TMPDIR"
 
@@ -70,7 +70,7 @@ cellbarcode_length: 16
 umi_start: 17
 umi_length: 10
 max_multimap: 500
-star_alignment_threads: 32
+star_alignment_threads: 24
 
 # TELESCOPE
-telescope_threads: 2
+telescope_threads: 24

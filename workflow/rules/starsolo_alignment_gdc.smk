@@ -17,7 +17,7 @@ rule starsolo_alignment:
         cDNA = "runs/{s}/{s}_2.fastq.gz",
         barcodes = "runs/{s}/{s}_1.fastq.gz",
         genome = config['indexes']['star'],
-        whitelist = "refs/downloads/whitelist.10x.v2.txt"
+        whitelist = "refs/downloads/whitelist.10x.v3.txt"
     output:
         "results/starsolo_algn/{s}/{s}_GDC38.Aligned.sortedByCoord.out.bam"
     params:
@@ -40,6 +40,7 @@ rule starsolo_alignment:
             --soloType CB_UMI_Simple\
             --soloCBwhitelist {input.whitelist}\
             --outFilterMultimapNmax {params.max_multimap}\
+            --soloBarcodeReadLength 0\
             --outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM\
             --outSAMtype BAM SortedByCoordinate\
             --outFileNamePrefix {params.out_prefix}
@@ -59,5 +60,5 @@ rule samtools_collate:
         {input}\
         -o {output}\
         -@ {threads}\
-        {params.tmpdir}
+        /local/
         '''

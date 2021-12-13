@@ -6,8 +6,7 @@ Download FASTQs
 """
 
 rule fasterq_dump:
-    conda:
-        "../envs/utils.yaml"
+    conda: "../envs/sra.yaml"
     output:
         "runs/{s}/{s}_1.fastq",
         "runs/{s}/{s}_2.fastq"
