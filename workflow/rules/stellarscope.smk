@@ -5,7 +5,7 @@ rule stellarscope:
     conda:
         "../envs/telescope.yaml"
     output:
-        "results/telescope/{s}/{s}-TE_counts.tsv",
+        "results/telescope/{s}/{s}-TE_counts.mtx",
         "results/telescope/{s}/{s}-updated.bam",
         "results/telescope/{s}/{s}-other.bam"
     input:
