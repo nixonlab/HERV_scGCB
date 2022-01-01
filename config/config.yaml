@@ -74,3 +74,7 @@ star_alignment_threads: 24
 
 # TELESCOPE
 telescope_threads: 24
+
+# CELL SORT
+
+cell_sort_tmp: "/local/"
