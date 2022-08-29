@@ -21,6 +21,19 @@ echo {params.md5}  {output[0]} | md5sum -c -
 
 ################################# EXTRACT REFS #################################
 
+rule get_whitelist:
+    """
+    Get appropriate 10x whitelist of used barcodes
+    """
+    input:
+        "refs/downloads/whitelist.10x.v3.txt.gz"
+    output:
+        config['whitelist']['v3']
+    shell:
+        '''
+        gunzip -c {input} > {output}
+        '''
+
 rule extract_genome:
     input:
         'refs/downloads/GRCh38.d1.vd1.fa.tar.gz'
@@ -110,7 +123,6 @@ rule telescope_annotation:
         '''
 python workflow/scripts/sortgtf.py --fai {input[1]} < {input[0]} > {output[0]}
         '''
-
 
 ################################# RULE TARGETS #################################
 

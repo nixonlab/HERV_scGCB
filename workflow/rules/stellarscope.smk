@@ -5,19 +5,19 @@ rule stellarscope:
     conda:
         "../envs/telescope.yaml"
     output:
-        "results/telescope/{s}/{s}-TE_counts.mtx"
+        "results/telescope/{samid}/{samid}-TE_counts.mtx"
     input:
-        bam = "results/starsolo_algn/{s}/{s}_GDC38.collated.out.bam",
+        bam = "results/starsolo_algn/{samid}/{samid}_GDC38.collated.out.bam",
         annotation = rules.telescope_annotation.output,
-        barcode = "results/starsolo_algn/{s}/{s}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    benchmark: "benchmarks/telescope/{s}_telescope.tsv"
+        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
+    benchmark: "benchmarks/telescope/{samid}_telescope.tsv"
     log:
-        "results/telescope/{s}/telescope.log"
+        "results/telescope/{samid}/telescope.log"
     threads: config['telescope_threads']
     params:
         tmpdir = config['local_tmp'],
-        out = "results/telescope/{s}",
-        exp_tag = "{s}"
+        out = "results/telescope/{samid}",
+        exp_tag = "{samid}"
     shell:
         """
 
@@ -27,7 +27,7 @@ rule stellarscope:
             ps -C $cmd -o rss= -o args= | grep "$param" | awk '{{$1=int(100 * $1/1024/1024)/100"GB";}}{{ print $1;}}' | while read v; do echo "Memory usage (RSS) for $cmd (param: $param): $v"; done
         }}
 
-        while true; do getrss stellarscope {wildcards.s}; sleep 5; done &
+        while true; do getrss stellarscope {wildcards.samid}; sleep 5; done &
 
         stellarscope assign\
         --updated_sam\
@@ -44,14 +44,14 @@ rule cell_sort:
     conda:
         "../envs/samtools.yaml"
     input:
-        bam = "results/starsolo_algn/{s}/{s}_GDC38.collated.out.bam",
-        barcode = "results/starsolo_algn/{s}/{s}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    output: "results/telescope/{s}/{s}-Aligned.sortedByCB.out.bam"
+        bam = "results/starsolo_algn/{samid}/{samid}_GDC38.collated.out.bam",
+        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
+    output: "results/telescope/{samid}/{samid}-Aligned.sortedByCB.out.bam"
     threads: config['telescope_threads']
     params:
         tmpdir = config['cell_sort_tmp'],
-        outfile = "results/telescope/{s}-Aligned.sortedByCB.out.bam"
-    log: "results/telescope/{s}/cellsort.log"
+        outfile = "results/telescope/{samid}-Aligned.sortedByCB.out.bam"
+    log: "results/telescope/{samid}/cellsort.log"
     shell:
         """
         samtools view -u -F 4 -D CB:{input.barcode} {input.bam} | samtools sort -@ {threads} -n -t CB > {output}
@@ -60,16 +60,16 @@ rule cell_sort:
 rule stellarscope_individual:
     conda: "../envs/telescope.yaml"
     input:
-        bam = "results/telescope/{s}/{s}-Aligned.sortedByCB.out.bam",
+        bam = "results/telescope/{samid}/{samid}-Aligned.sortedByCB.out.bam",
         annotation = rules.telescope_annotation.output,
-        barcode = "results/starsolo_algn/{s}/{s}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    output: "results/telescope_individual/{s}/{s}_individual-TE_counts.mtx"
+        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
+    output: "results/telescope_individual/{samid}/{samid}_individual-TE_counts.mtx"
     threads: config['telescope_threads']
     params:
         tmpdir = config['local_tmp'],
-        out = "results/telescope_individual/{s}",
-        exp_tag = "{s}_individual"
-    log: "results/telescope_individual/{s}/telescope.log"
+        out = "results/telescope_individual/{samid}",
+        exp_tag = "{samid}_individual"
+    log: "results/telescope_individual/{samid}/telescope.log"
     shell:
         """
         stellarscope assign\
@@ -89,4 +89,4 @@ rule sample_complete:
         rules.cell_sort.output,
         rules.stellarscope_individual.output
     output:
-        touch("results/completed/{s}_completed.txt")
+        touch("results/completed/{samid}_completed.txt")

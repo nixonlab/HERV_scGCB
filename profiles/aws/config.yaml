@@ -4,7 +4,7 @@ cluster:
      --partition={resources.partition}
      --cpus-per-task={threads}
      --job-name=smk-{rule}-{wildcards}
-     --output=logs/{rule}/{rule}-{wildcards.s}-%j.out
+     --output=logs/{rule}/{rule}-{wildcards}-%j.out
 config: local_tmp="$TMPDIR"
 default-resources:
   - partition=defq

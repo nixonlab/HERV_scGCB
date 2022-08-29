@@ -1,16 +1,27 @@
-#! /usr/bin/env python
-import os
-import csv
-import requests
-from subprocess import check_output
-from collections import defaultdict
+ #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
+# Setup
+
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+import pandas as pd
+import os
+import sys
+import re
+import gzip
+import csv
+from collections import defaultdict
+from snakemake.utils import min_version
+min_version("6.4.1")
+from snakemake.exceptions import RuleException
 
 wildcard_constraints:
-    proj_acc = "[SED]RP[0-9]{6,9}",
-    exp_acc  = "[SED]RX[0-9]{6,9}",
-    samp_acc = "[SED]RS[0-9]{6,9}",
-    run_acc  = "[SED]RR[0-9]{6,9}"
+    runid = 'SRR[0-9]{6,9}', # runid must start with 'SRR', followed by 6-9 digits
+    samid = 'SAMN[0-9]{6,9}'  # samid must start with 'GSM', followed by 6-9 digits
+
+# config file
 
 configfile: "config/config.yaml"
 
@@ -21,14 +32,19 @@ with open(config['sra_run_table'], 'r') as csvfile:
 
 SAMPLES = [d[config['colname_SAMPLE']] for d in METADATA]
 RUNS = [d[config['colname_RUN']] for d in METADATA]
+WHITELIST = [d[config['colname_WHITELIST']] for d in METADATA]
 
 SAMPLE_RUN = defaultdict(list)
 for d in METADATA:
     SAMPLE_RUN[d[config['colname_SAMPLE']]].append(d[config['colname_RUN']])
 
+SAMPLE_WHITELIST = defaultdict(list)
+for d in METADATA:
+    SAMPLE_WHITELIST[d[config['colname_SAMPLE']]].append(d[config['colname_WHITELIST']])
+
 rule all:
     input:
-        expand("results/completed/{s}_completed.txt", s=RUNS)
+        expand("results/completed/{samid}_completed.txt", samid=SAMPLES)
 
 include: "rules/fasterq_dump.smk"
 include: "rules/download_remote.smk"

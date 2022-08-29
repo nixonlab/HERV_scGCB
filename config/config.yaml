@@ -1,10 +1,11 @@
 # Path to file containing run-level metadata
 # Usually it is a table from SRA Run Selector
-sra_run_table: "config/SraRunTable.txt"
+sra_run_table: "config/SraRunTable_5.txt"
 
 # Column names for sample and run
 colname_SAMPLE: "BioSample"
 colname_RUN: "Run"
+colname_WHITELIST: "whitelist"
 
 # Path to key for dbGaP protected files.
 # Set to null if not using protected files
@@ -24,6 +25,9 @@ downloads:
   gencode.v38.annotation.gtf.gz:
     url: "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz"
     md5: "16fcae8ca8e488cd8056cf317d963407"
+  whitelist.10x.v3.txt.gz:
+    url: "https://github.com/10XGenomics/cellranger/raw/master/lib/python/cellranger/barcodes/3M-february-2018.txt.gz"
+    md5: "eac3cdd869867e9e979d5da300a81823"
   whitelist.10x.v2.txt:
     url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt"
     md5: "f62a276e262fdd85262a889d0f48556b"
@@ -33,6 +37,10 @@ downloads:
   retro.hg38.v1.tsv.gz:
     url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
     md5: "b3ca6d3705d030742255d216e25dfc1d"
+
+whitelist:
+  v3: "refs/downloads/whitelist.10x.v3.txt"
+  v2: "refs/downloads/whitelist.10x.v2.txt"
 
 sequences:
     genome: "refs/sequences/genome.fa.gz"
