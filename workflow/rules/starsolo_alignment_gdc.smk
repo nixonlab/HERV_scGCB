@@ -47,19 +47,20 @@ rule starsolo_alignment:
             --outFileNamePrefix {params.out_prefix}
         '''
 
-rule samtools_collate:
-    conda: "../envs/utils.yaml"
-    output: "results/starsolo_algn/{samid}/{samid}_GDC38.collated.out.bam"
-    input: "results/starsolo_algn/{samid}/{samid}_GDC38.Aligned.sortedByCoord.out.bam"
-    benchmark: "benchmarks/samtools_collate/{samid}_samtools_collate.tsv"
-    params:
-        tmpdir = config['fasterq_dump_tmp']
-    threads: config['samtools_collate_threads']
+rule stellarscope_cellsort:
+    conda:
+        "../envs/telescope.yaml"
+    output:
+        sorted_bam = "results/stellarscope_cellsort/{samid}/{samid}.Aligned.sortedByCB.bam"
+    input:
+        alignment_bam=rules.starsolo_alignment.output[0],
+        filtered_barcodes=rules.starsolo_alignment.output[1]
+    benchmark:
+        "benchmarks/stellarscope_cellsort/{samid}_stellarscope_cellsort.tsv"
+    log:
+        "results/stellarscope_cellsort/{samid}/stellarscope_cellsort.log"
+    threads: 4
     shell:
         '''
-        samtools collate\
-        {input}\
-        -o {output}\
-        -@ {threads}\
-        /local/
+stellarscope cellsort --ncpu {threads} --outfile {output.sorted_bam} {input.alignment_bam} {input.filtered_barcodes}
         '''

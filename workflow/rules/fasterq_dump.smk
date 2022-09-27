@@ -27,8 +27,8 @@ rule cat_runids_to_samples:
         R1 = lambda wc: expand("runs/{s}/{s}_1.fastq", s=SAMPLE_RUN[wc.samid]), # input fastqs per run
         R2 = lambda wc: expand("runs/{s}/{s}_2.fastq", s=SAMPLE_RUN[wc.samid])
     output:
-        R1 = 'samples/{samid}_1.fastq', # output fastqs per sample
-        R2 = 'samples/{samid}_2.fastq'
+        R1 = temp('samples/{samid}_1.fastq'), # output fastqs per sample
+        R2 = temp('samples/{samid}_2.fastq')
     shell:
         """
         cat {input.R1} > {output.R1} # fastqs belonging to same sample (multipe runs) are combined
@@ -37,8 +37,8 @@ rule cat_runids_to_samples:
 
 rule gzip:
     output:
-        R1_in = "samples/{samid}_1.fastq.gz",
-        R2_in = "samples/{samid}_2.fastq.gz"
+        R1_in = temp("samples/{samid}_1.fastq.gz"),
+        R2_in = temp("samples/{samid}_2.fastq.gz")
     input:
         R1_in = "samples/{samid}_1.fastq",
         R2_in = "samples/{samid}_2.fastq"

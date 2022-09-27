@@ -1,6 +1,6 @@
 # Path to file containing run-level metadata
 # Usually it is a table from SRA Run Selector
-sra_run_table: "config/SraRunTable_5.txt"
+sra_run_table: "config/SraRunTable.txt"
 
 # Column names for sample and run
 colname_SAMPLE: "BioSample"

@@ -1,92 +1,59 @@
 #! /usr/bin/env python
 # -*- coding utf-8 -*-
 
-rule stellarscope:
-    conda:
-        "../envs/telescope.yaml"
-    output:
-        "results/telescope/{samid}/{samid}-TE_counts.mtx"
-    input:
-        bam = "results/starsolo_algn/{samid}/{samid}_GDC38.collated.out.bam",
-        annotation = rules.telescope_annotation.output,
-        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    benchmark: "benchmarks/telescope/{samid}_telescope.tsv"
-    log:
-        "results/telescope/{samid}/telescope.log"
-    threads: config['telescope_threads']
-    params:
-        tmpdir = config['local_tmp'],
-        out = "results/telescope/{samid}",
-        exp_tag = "{samid}"
-    shell:
-        """
+def get_strand_cmd(wc):
+    # input functions are passed a single parameter, wildcards
+    # wildcards is a namespace so refer to the variable with a "."
+    if wc.smode == "U": # handle the unstranded case
+        return ""
+    # all other options (R, F, RF, and FR) will just be passed as-is
+    return f'--stranded_mode {wc.smode}' # this is a python f-string
 
-        getrss() {{
-            local cmd=$1
-            local param=$2
-            ps -C $cmd -o rss= -o args= | grep "$param" | awk '{{$1=int(100 * $1/1024/1024)/100"GB";}}{{ print $1;}}' | while read v; do echo "Memory usage (RSS) for $cmd (param: $param): $v"; done
-        }}
-
-        while true; do getrss stellarscope {wildcards.samid}; sleep 5; done &
-
-        stellarscope assign\
-        --updated_sam\
-        --exp_tag {params.exp_tag}\
-        --outdir {params.out}\
-         {input[0]}\
-         {input[1]}\
-         --barcodefile {input[2]}\
-         2>&1 | tee {log[0]}
-
-        """
-
-rule cell_sort:
-    conda:
-        "../envs/samtools.yaml"
-    input:
-        bam = "results/starsolo_algn/{samid}/{samid}_GDC38.collated.out.bam",
-        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    output: "results/telescope/{samid}/{samid}-Aligned.sortedByCB.out.bam"
-    threads: config['telescope_threads']
-    params:
-        tmpdir = config['cell_sort_tmp'],
-        outfile = "results/telescope/{samid}-Aligned.sortedByCB.out.bam"
-    log: "results/telescope/{samid}/cellsort.log"
-    shell:
-        """
-        samtools view -u -F 4 -D CB:{input.barcode} {input.bam} | samtools sort -@ {threads} -n -t CB > {output}
-        """
-
-rule stellarscope_individual:
+rule stellarscope_pseudobulk:
     conda: "../envs/telescope.yaml"
+    output:
+        "results/telescope_pseudobulk/{samid}_{smode}/{samid}_{smode}_pseudobulk-TE_counts.mtx"
     input:
-        bam = "results/telescope/{samid}/{samid}-Aligned.sortedByCB.out.bam",
+        bam = rules.stellarscope_cellsort.output,
         annotation = rules.telescope_annotation.output,
-        barcode = "results/starsolo_algn/{samid}/{samid}_GDC38.Solo.out/Gene/filtered/barcodes.tsv"
-    output: "results/telescope_individual/{samid}/{samid}_individual-TE_counts.mtx"
-    threads: config['telescope_threads']
+        barcodes = rules.starsolo_alignment.output[1]
+    benchmark:
+        "benchmarks/telescope_pseudobulk/{samid}_{smode}_telescope_pseudobulk.tsv"
+    log:
+        "results/telescope_pseudobulk/{samid}_{smode}/telescope.log"
+    threads:
+        config['telescope_threads']
+    wildcard_constraints:
+        smode="U|R|F|RF|FR"
     params:
         tmpdir = config['local_tmp'],
-        out = "results/telescope_individual/{samid}",
-        exp_tag = "{samid}_individual"
-    log: "results/telescope_individual/{samid}/telescope.log"
+        out = "results/telescope_pseudobulk/{samid}_{smode}",
+        exp_tag = "{samid}_{smode}_pseudobulk",
+        stranded_mode = get_strand_cmd # the function name. this is a "callable" object that takes 1 argument, wildcards.
     shell:
-        """
-        stellarscope assign\
-        --pooling_mode individual\
-        --updated_sam\
-        --exp_tag {params.exp_tag}\
-        --outdir {params.out}\
-         {input[0]}\
-         {input[1]}\
-         --barcodefile {input[2]}\
-         2>&1 | tee {log[0]}
-        """
+        '''
+stellarscope\
+ assign\
+ --exp_tag {params.exp_tag}\
+ --updated_sam\
+ --outdir {params.out}\
+ --use_every_reassign_mode\
+ {params.stranded_mode}\
+ --whitelist {input.barcodes}\
+ --pooling_mode pseudobulk\
+ {input.bam}\
+ {input.annotation}\
+ 2>&1 | tee {log[0]}
+	'''
 
-rule sample_complete:
-    input:
-        rules.stellarscope.output,
-        rules.cell_sort.output,
-        rules.stellarscope_individual.output
+# when you request targets then you can specify the reps or stranded mode in the filename
+# Below will launch 5 runs of stellarscope. Three runs will use no argument for stranded
+# mode and two will use --stranded_mode F. The outputs will all be to different
+# directories so we can compare.
+
+rule telescope_complete:
     output:
         touch("results/completed/{samid}_completed.txt")
+    input:
+        "results/telescope_pseudobulk/{samid}_U/{samid}_U_pseudobulk-TE_counts.mtx",
+        "results/telescope_pseudobulk/{samid}_F/{samid}_F_pseudobulk-TE_counts.mtx"
