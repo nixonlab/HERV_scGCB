@@ -21,7 +21,6 @@ use-conda: true
 conda-frontend: mamba
 printshellcmds: true
 reason: true
-conda-frontend: mamba
 conda-prefix: .snakemake/conda
 # restart-times: 3
 # max-jobs-per-second: 1
