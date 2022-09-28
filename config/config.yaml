@@ -81,7 +81,7 @@ max_multimap: 500
 star_alignment_threads: 24
 
 # TELESCOPE
-telescope_threads: 24
+telescope_threads: 3
 
 # CELL SORT
 
