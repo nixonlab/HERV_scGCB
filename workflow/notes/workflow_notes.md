@@ -29,6 +29,21 @@ In this project we analyze publicly available scRNA-seq data from [Holmes et al.
  
 We use our newly developed tool Stellarscope to obtain counts matrices for each cell that include both protein-coding transcripts and TE transcripts. Then we analyze the matrices to characterize the retrotranscriptome in B cells from the Light, Intermediate, and Dark zones of the Germinal Center, as well as memory precursors and plasma cells.
 
+### Chemistry 
+
+[10X what is the difference between 3' and 5'](https://kb.10xgenomics.com/hc/en-us/articles/360000939852-What-is-the-difference-between-Single-Cell-3-and-5-Gene-Expression-libraries-)
+
+[10X genomics single cell VDJ](https://mixcr.com/mixcr/reference/overview-built-in-presets/#10xgenomics)
+
+[Comparing 10x Genomics single-cell 3' and 5' assay in short-and long-read sequencing](https://www.biorxiv.org/content/10.1101/2022.10.27.514084v1)
+
+[Cell Ranger V(D)J Algorithms Overview](https://github.com/Dongfang1021/10X_vdj_gex#cell-ranger-vdj-algorithms-overview)
+
+[What is Cell Ranger for Immune Profiling?](https://github.com/Dongfang1021/10X_vdj_gex#what-is-cell-ranger-for-immune-profiling)
+
+[Biostars STARsolo config for 10x Chromium v1, v2, v3](https://www.biostars.org/p/462568/)
+
+
 ---
 
 ## Workflow Strategy
