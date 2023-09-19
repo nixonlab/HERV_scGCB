@@ -57,7 +57,7 @@ samples = pd.DataFrame(merged_sra_meta.groupby('sampid')['runid'].apply(list))
 # set runid as the index of sra_runtable and store the resulting dataframe in runs 
 # (runs is a new dataframe that has the same rows as sra_runtable but with runid column as the index)
 # this means that we could use the .loc method to access rows/cols in the dataframe by index
-runs = sra_runtable.set_index('runid')
+runs = merged_sra_meta.set_index('runid')
 
 # get samples grouped by assay
 assays = pd.DataFrame(merged_sra_meta.groupby('assay_meta')['sampid'].apply(list))
