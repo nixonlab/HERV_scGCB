@@ -43,6 +43,7 @@ We use our newly developed tool Stellarscope to obtain counts matrices for each 
 
 [Biostars STARsolo config for 10x Chromium v1, v2, v3](https://www.biostars.org/p/462568/)
 
+[scg_lib_structs](https://teichlab.github.io/scg_lib_structs/)
 
 ---
 
