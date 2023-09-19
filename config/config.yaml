@@ -1,23 +1,38 @@
+# this file contains everything to configure the workflow on a global scale.
+# In case of sample based data, it should be complemented by a samples file that contains
+# one row per sample that can easily be parsed via pandas.
+
 # Path to file containing run-level metadata
 # Usually it is a table from SRA Run Selector
-sra_run_table: "config/SraRunTable.txt"
+#
+sra_runtable:
+    filename: "config/SraRunTable.csv"
+    runid: "Run"
+    sampid: "GEO_Accession (exp)"
+    layout: "LibraryLayout"
+    project: "BioProject"
 
-# Column names for sample and run
-colname_SAMPLE: "BioSample"
-colname_RUN: "Run"
-colname_WHITELIST: "whitelist"
+# Samples metadata file
+#
+samples_metadata:
+    filename: "config/gcb_samples_metadata.csv"
+    sampid_meta: "geo_accession"
+    sampname_meta: "geo_sample"
+    samptype_meta: "data_type"
+    tenxtag_meta: "kit"
+    tenxchem_meta: "chemistry"
 
+ 
 # Path to key for dbGaP protected files.
 # Set to null if not using protected files
 dbgap_key: null
 
-# Location for SRA URL.
-# Typical options are "ncbi", "s3.us-east-1", "gs.US", etc.
-sra_location: "ncbi"
+# directory for temps
+#
+tmpdir: "/tmp"
 
-tmpdir: "$TMPDIR"
-
-# Remote databases or resources to be downloaded
+# Downloads
+#
 downloads:
   GRCh38.d1.vd1.fa.tar.gz:
     url: "https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834"
