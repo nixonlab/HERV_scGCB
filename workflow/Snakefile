@@ -14,19 +14,29 @@ min_version("6.4.1")
 
 configfile: "config/config.yaml"
 
+# wildcard constraints
+#
 wildcard_constraints:
-    run_id = 'SRR[0-9]{6,9}', # runid must start with 'SRR', followed by 6-9 digits
-    sample_id = 'SAMN[0-9]{6,9}'  # samid must start with 'GSM', followed by 6-9 digits
+    sra_run = "SRR[0-9]{6,9}",
+    dataset = "PRJNA\d+"
 
 # include rules
 #
 include: "rules/common.smk"
+include: "rules/get_fastq_files.smk"
+include: "rules/sample_complete.smk"
+
+# build inputs
+#
+formatted_inputs = [
+    "results/{dataset}/complete/{samp}/{samp}_complete.txt".format(dataset=row['project_meta'], samp=index)
+    for index, row in meta_table.iterrows()
+    if row['assay_meta'] == 'rna_seq'
+]
 
 # workflow top rule
 #
-
-
 rule all:
     input:
-        expand("results/completed/{samid}_completed.txt", samid=SAMPLES)
+        formatted_inputs
 
