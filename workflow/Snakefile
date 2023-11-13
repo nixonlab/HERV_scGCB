@@ -3,30 +3,14 @@
 
 # Setup
 #
-from snakemake.utils import min_version
-from snakemake.exceptions import WorkflowError
-from snakemake.exceptions import RuleException
 
 configfile: "config/config.yaml"
-
-import os
-import pandas as pd
-
-df = pd.read_csv(config['samples_metadata']['filename'])
-dsets = pd.DataFrame(df.groupby('dataset')['sample'].apply(list))
-
-min_version("6.4.1")
 
 # wildcard constraints
 #
 wildcard_constraints:
     sra_run = "SRR[0-9]{6,9}",
     dataset = "PRJNA\d+"
-
-rule all:
-    input:
-        expand('results/rna_gex_PRJNA587486/completed/{samp}.txt', samp=dsets.loc['rna_gex_PRJNA587486']['sample']),
-        expand('results/cite_gex_PRJNA587486/completed/{samp}.txt', samp=dsets.loc['cite_gex_PRJNA587486']['sample'])
 
 # include rules
 #
@@ -36,5 +20,17 @@ include: "rules/align_multi_starsolo.smk"
 include: "rules/canonicalQC.smk"
 include: "rules/stellarscope.smk"
 include: "rules/analysis.smk"
-include: "rules/sample_complete.smk"
+#include: "rules/sample_complete.smk"
+
+rule rna_gex:
+    input:
+        expand('results/rna_gex_PRJNA587486/align_multi_starsolo/{sample}/Aligned.sortedByCoord.out.bam',
+            sample=meta_table[meta_table['dataset'] == 'rna_gex_PRJNA587486'].index
+        ),
+        expand('results/rna_gex_PRJNA587486/stellarscope/{sample}/poolmodes.txt',
+            sample=meta_table[meta_table['dataset'] == 'rna_gex_PRJNA587486'].index
+        ),        
+    output:
+        touch('results/rna_gex/completed.txt')
+
 

@@ -2,7 +2,7 @@
 
 # Definition of dataframes that will be used in other parts of the workflow
 #
-#import pandas as pd
+import pandas as pd
 
 ##### read in the SRA run table CSV file and store in dataframe
 #
@@ -46,7 +46,7 @@ samples = pd.DataFrame(merged_sra_meta.groupby('sample')['runid'].apply(list))
 runs = merged_sra_meta.set_index('runid')
 
 # get samples grouped by dataset
-#dsets = pd.DataFrame(meta_table.groupby('dataset')['sample'].apply(list))
+dsets = pd.DataFrame(meta_table.groupby('dataset')['sample'].apply(list))
 
 # FINALLY make sample index for the meta table
 meta_table.set_index('sample', inplace=True)
