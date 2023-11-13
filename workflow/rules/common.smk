@@ -22,17 +22,8 @@ sra_runtable = pd.read_csv(
 meta_table = pd.read_csv(
     config['samples_metadata']['filename']
     ).rename(columns={
-        config['samples_metadata']['project_meta']: 'project_meta',
-        config['samples_metadata']['sampid_meta']: 'sampid_meta',
-        config['samples_metadata']['sampname_meta']: 'sampname_meta',
-        config['samples_metadata']['assay_meta']: 'assay_meta',
-        config['samples_metadata']['chem_meta']: 'chem_meta'
+        config['samples_metadata']['sampid_meta']: 'sampid_meta'
     })
-
-# add to the metadata table a final sample name 
-#
-meta_table['sample_meta'] = meta_table['sampname_meta'] + '_' + meta_table['sampid_meta']
-#meta_table.set_index('sample_meta', inplace=True)
 
 ##### Merge sra_runtable and meta_table based on sampid
 #
@@ -46,7 +37,7 @@ merged_sra_meta = sra_runtable.merge(meta_table, left_on='sampid', right_on='sam
 # the list function takes an iterable (here a column of the df) and returns a list containing all the elements of the iterable
 # 
 # this returns a new dataframe where for each sample, the runid column contains a list of all the SRA run IDs associated with that sample
-samples = pd.DataFrame(merged_sra_meta.groupby('sample_meta')['runid'].apply(list))
+samples = pd.DataFrame(merged_sra_meta.groupby('sample')['runid'].apply(list))
 
 
 # set runid as the index of sra_runtable and store the resulting dataframe in runs 
@@ -54,10 +45,10 @@ samples = pd.DataFrame(merged_sra_meta.groupby('sample_meta')['runid'].apply(lis
 # this means that we could use the .loc method to access rows/cols in the dataframe by index
 runs = merged_sra_meta.set_index('runid')
 
-# get samples grouped by assay
-assays = pd.DataFrame(merged_sra_meta.groupby('assay_meta')['sample_meta'].apply(list))
+# get samples grouped by dataset
+#dsets = pd.DataFrame(meta_table.groupby('dataset')['sample'].apply(list))
 
 # FINALLY make sample index for the meta table
-meta_table.set_index('sample_meta', inplace=True)
+meta_table.set_index('sample', inplace=True)
 
 

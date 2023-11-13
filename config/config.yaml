@@ -15,12 +15,7 @@ sra_runtable:
 #
 samples_metadata:
     filename: "config/gcb_samples_metadata.csv"
-    project_meta: "sra_bioproject"
     sampid_meta: "geo_accession"
-    sampname_meta: "geo_sample"
-    assay_meta: "assay"
-    chem_meta: "chemistry"
-
  
 # Path to key for dbGaP protected files.
 # Set to null if not using protected files
@@ -34,6 +29,10 @@ tmpdir: "/tmp"
 #
 sra_to_fastq_threads: 8
 
+# reference genome
+#
+star_index: "resources/STAR_GRCh38.d1.vd1_gencode.v38"
+
 # 10x protocols
 #
 barcode_mate:
@@ -42,20 +41,82 @@ barcode_mate:
     v3: 'R1'
 
 whitelist:
-# maybe bioproject as dataset wont be enough     
-# yes it will, we just have to know what to ask for
+    rna_gex_PRJNA587486:
+        "resources/whitelist/737K-august-2016.txt"
+    cite_gex_PRJNA587486:
+        "resources/whitelist/3M-february-2018.txt"
+    vdj_gex_PRJNA779703:
+        "resources/whitelist/737K-august-2016.txt"
 
-# Downloads
-#
-downloads:
-  whitelist.10x.v3.txt.gz:
-    url: "https://github.com/10XGenomics/cellranger/raw/master/lib/python/cellranger/barcodes/3M-february-2018.txt.gz"
-    md5: "eac3cdd869867e9e979d5da300a81823"
-  whitelist.10x.v2.txt:
-    url: "https://raw.githubusercontent.com/10XGenomics/cellranger/master/lib/python/cellranger/barcodes/737K-august-2016.txt"
-    md5: "f62a276e262fdd85262a889d0f48556b"
+align_multi_starsolo:
+    rna_gex_PRJNA587486:
+        soloType: "CB_UMI_Simple"
+        readFilesCommand: "gunzip -c"
+        soloCBstart: 1
+        soloCBlen: 16
+        soloUMIstart: 17
+        soloUMIlen: 10
+        outSAMunmapped: "Within"
+        soloFeatures: "Gene SJ Velocyto"
+        outSAMattributes: "NH HI AS NM nM MD CR CY UR UY CB UB GX GN sS sQ sM"
+        outSAMtype: "BAM SortedByCoordinate"
+        clipAdapterType: "CellRanger4"
+        outFilterScoreMin: 30
+        soloCBmatchWLtype: "1MM_multi_Nbase_pseudocounts"
+        soloUMIfiltering: "MultiGeneUMI_CR"
+        soloUMIdedup: "1MM_CR"
+        limitOutSJcollapsed: 5000000
+        outFilterMultimapScoreRange: 5
+        outFilterMultimapNmax: 500
+        limitBAMsortRAM: 47378804544
+    cite_gex_PRJNA587486:
+        soloType: "CB_UMI_Simple"
+        readFilesCommand: "gunzip -c"
+        soloCBstart: 1
+        soloCBlen: 16
+        soloUMIstart: 17
+        soloUMIlen: 12
+        outSAMunmapped: "Within"
+        soloFeatures: "Gene SJ Velocyto"
+        outSAMattributes: "NH HI AS NM nM MD CR CY UR UY CB UB GX GN sS sQ sM"
+        outSAMtype: "BAM SortedByCoordinate"
+        clipAdapterType: "CellRanger4"
+        outFilterScoreMin: 30
+        soloCBmatchWLtype: "1MM_multi_Nbase_pseudocounts"
+        soloUMIfiltering: "MultiGeneUMI_CR"
+        soloUMIdedup: "1MM_CR"
+        limitOutSJcollapsed: 5000000
+        outFilterMultimapScoreRange: 5
+        outFilterMultimapNmax: 500
+        limitBAMsortRAM: 47378804544
+    vdj_gex_PRJNA779703:
+        soloType: "CB_UMI_Simple"
+        readFilesCommand: "gunzip -c"
+        soloCBstart: 1
+        soloCBlen: 16
+        soloUMIstart: 17
+        soloUMIlen: 10
+        soloStrand: "Reverse"
+        outSAMunmapped: "Within"
+        soloFeatures: "Gene SJ Velocyto"
+        outSAMattributes: "NH HI AS NM nM MD CR CY UR UY CB UB GX GN sS sQ sM"
+        outSAMtype: "BAM SortedByCoordinate"
+        clipAdapterType: "CellRanger4"
+        outFilterScoreMin: 30
+        soloCBmatchWLtype: "1MM_multi_Nbase_pseudocounts"
+        soloUMIfiltering: "MultiGeneUMI_CR"
+        soloUMIdedup: "1MM_CR"
+        limitOutSJcollapsed: 5000000
+        outFilterMultimapScoreRange: 5
+        outFilterMultimapNmax: 500
+        limitBAMsortRAM: 47378804544
 
-whitelist:
-  v3: "refs/downloads/whitelist.10x.v3.txt"
-  v2: "refs/downloads/whitelist.10x.v2.txt"
+stellarscope:
+        retro_gtf: "resources/retro.hg38.v1.gtf"
+        retro_rds: "resources/retro.hg38.v1.rds"
+        gtype_rds: "resources/gencode.v38/metadata.gid_gtype.rds"
+
+annotate_celltypes_azimuth:
+        filter_threshold: 0.8
+
 

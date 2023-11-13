@@ -1,25 +1,25 @@
-sra_bioproject,geo_accession,geo_sample,protocol,experiment,kit,chemistry,assay
-PRJNA587486,GSM4148370,GC1,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4148371,GC2,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4148372,DZ1,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4148373,DZ2,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4148374,LZ1,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4148375,LZ2,single cell 3' kit,rna_gex,3',v2,rna_seq
-PRJNA587486,GSM4560814,GC3a,single cell 3' kit,cite_gex,3',v3,rna_seq
-PRJNA587486,GSM4560815,GC3b,single cell 3' kit,cite_gex,3',v3,rna_seq
-PRJNA587486,GSM4560816,GC3a,TotalSeq-A Antibodies Hashing with 10x Single Cell 3′ Reagent Kit v3 protocol (BioLegend),cite_ab,3',v3,cite_seq
-PRJNA587486,GSM4560817,GC3b,TotalSeq-A Antibodies Hashing with 10x Single Cell 3′ Reagent Kit v3 protocol (BioLegend),cite_ab,3',v3,cite_seq
-PRJNA779703,GSM5686870,DZ1,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686871,DZ2,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686872,GC1,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686873,GC2,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686874,GC3,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686875,LZ1,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686876,LZ2,single cell 5' kit,vdj_gex,5',v1.1,rna_seq
-PRJNA779703,GSM5686877,DZ1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686878,DZ2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686879,GC1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686880,GC2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686881,GC3,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686882,LZ1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
-PRJNA779703,GSM5686883,LZ2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,v1.1,vdj_seq
+sra_bioproject,geo_accession,geo_sample,protocol,experiment,kit,assay,sample,dataset,chemistry,stranded,azimuth_ref,doublet_rate
+PRJNA587486,GSM4148370,GC1,single cell 3' kit,rna_gex,3',rna_seq,GC1_GSM4148370,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4148371,GC2,single cell 3' kit,rna_gex,3',rna_seq,GC2_GSM4148371,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4148372,DZ1,single cell 3' kit,rna_gex,3',rna_seq,DZ1_GSM4148372,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4148373,DZ2,single cell 3' kit,rna_gex,3',rna_seq,DZ2_GSM4148373,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4148374,LZ1,single cell 3' kit,rna_gex,3',rna_seq,LZ1_GSM4148374,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4148375,LZ2,single cell 3' kit,rna_gex,3',rna_seq,LZ2_GSM4148375,rna_gex_PRJNA587486,v2,F,tonsilref,0.8
+PRJNA587486,GSM4560814,GC3a,single cell 3' kit,cite_gex,3',rna_seq,GC3a_GSM4560814,cite_gex_PRJNA587486,v3,F,tonsilref,0.8
+PRJNA587486,GSM4560815,GC3b,single cell 3' kit,cite_gex,3',rna_seq,GC3b_GSM4560815,cite_gex_PRJNA587486,v3,F,tonsilref,0.8
+PRJNA587486,GSM4560816,GC3a,TotalSeq-A Antibodies Hashing with 10x Single Cell 3′ Reagent Kit v3 protocol (BioLegend),cite_ab,3',cite_seq,GC3a_GSM4560816,cite_ab_PRJNA587486,v3,NA,NA,NA
+PRJNA587486,GSM4560817,GC3b,TotalSeq-A Antibodies Hashing with 10x Single Cell 3′ Reagent Kit v3 protocol (BioLegend),cite_ab,3',cite_seq,GC3b_GSM4560817,cite_ab_PRJNA587486,v3,NA,NA,NA
+PRJNA779703,GSM5686870,DZ1,single cell 5' kit,vdj_gex,5',rna_seq,DZ1_GSM5686870,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686871,DZ2,single cell 5' kit,vdj_gex,5',rna_seq,DZ2_GSM5686871,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686872,GC1,single cell 5' kit,vdj_gex,5',rna_seq,GC1_GSM5686872,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686873,GC2,single cell 5' kit,vdj_gex,5',rna_seq,GC2_GSM5686873,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686874,GC3,single cell 5' kit,vdj_gex,5',rna_seq,GC3_GSM5686874,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686875,LZ1,single cell 5' kit,vdj_gex,5',rna_seq,LZ1_GSM5686875,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686876,LZ2,single cell 5' kit,vdj_gex,5',rna_seq,LZ2_GSM5686876,vdj_gex_PRJNA779703,v1.1,R,tonsilref,0.8
+PRJNA779703,GSM5686877,DZ1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,DZ1_GSM5686877,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686878,DZ2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,DZ2_GSM5686878,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686879,GC1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,GC1_GSM5686879,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686880,GC2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,GC2_GSM5686880,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686881,GC3,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,GC3_GSM5686881,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686882,LZ1,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,LZ1_GSM5686882,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
+PRJNA779703,GSM5686883,LZ2,single cell v(d)j enrichment kit human b cell kit,vdj_vdj,NA,vdj_seq,LZ2_GSM5686883,vdj_vdj_PRJNA779703,v1.1,NA,NA,NA
