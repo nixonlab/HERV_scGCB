@@ -1,4 +1,4 @@
-name: telescope
+name: stellarscope_dev
 channels:
   - conda-forge
   - bioconda
@@ -15,7 +15,8 @@ dependencies:
   - htslib
   - intervaltree
   - pandas
-  - samtools
-  - pip
+  - samtools >=1.16
+  - packaging
   - pip:
-      - -e git+ssh://git@github.com/nixonlab/stellarscope.git#egg=stellarscope
+      - -e git+ssh://git@github.com/nixonlab/stellarscope.git@dev#egg=stellarscope
+
