@@ -1,35 +1,30 @@
- #! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python
+## -*- coding: utf-8 -*-
 
-# Setup
-#
+from snakemake.exceptions import WorkflowError
 
 configfile: "config/config.yaml"
 
-# wildcard constraints
-#
-wildcard_constraints:
-    sra_run = "SRR[0-9]{6,9}"
-
-# include rules
-#
 include: "rules/common.smk"
 include: "rules/get_fastq_files.smk"
 include: "rules/align_multi_starsolo.smk"
 include: "rules/canonicalQC.smk"
 include: "rules/stellarscope.smk"
 include: "rules/analysis.smk"
-#include: "rules/sample_complete.smk"
 
-rule rna_gex:
+modes = ['pseudobulk','celltype','celltype.l1']
+
+rule all:
     input:
-        expand('results/rna_gex_PRJNA587486/align_multi_starsolo/{sample}/Aligned.sortedByCoord.out.bam',
-            sample=meta_table[meta_table['dataset'] == 'rna_gex_PRJNA587486'].index
-        ),
-        expand('results/rna_gex_PRJNA587486/stellarscope/{sample}/poolmodes.txt',
-            sample=meta_table[meta_table['dataset'] == 'rna_gex_PRJNA587486'].index
-        ),        
-    output:
-        touch('results/rna_gex/completed.txt')
+        expand('results/rna_gex_PRJNA587486/analysis/{samp}/{exptag}.sct.h5seurat', samp=dsets.loc['rna_gex_PRJNA587486']['sample'], exptag = modes)
 
-
+# figure out cite and vdj raw reads
+#
+#rule all:
+#    input:
+#        expand('results/rna_gex_PRJNA587486/analysis/{samp}/{exptag}.sct.h5seurat', samp=dsets.loc['rna_gex_PRJNA587486']['sample'], exptag = modes
+#        ),
+#        expand('results/cite_gex_PRJNA587486/analysis/{samp}/{exptag}.sct.h5seurat', samp=dsets.loc['cite_gex_PRJNA587486']['sample'], exptag = modes
+#        ),
+#        expand('results/vdj_gex_PRJNA779703/analysis/{samp}/{exptag}.sct.h5seurat', samp=dsets.loc['vdj_gex_PRJNA779703']['sample'], exptag = modes
+#        )
