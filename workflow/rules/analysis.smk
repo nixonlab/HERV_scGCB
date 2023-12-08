@@ -28,18 +28,20 @@ rule create_seurat_obj:
     script:
         '../analysis/create_seurat_obj.R'
 
+
 rule map_azimuth:
     output:
         'results/{dataset}/analysis/{samp}/{exptag}.map.h5seurat'
     input:
         'results/{dataset}/analysis/{samp}/{exptag}.orig.h5seurat'
     params:
-        refname = lambda wc: samples.loc[wc.samp]['azimuth_ref']
+        refname = lambda wc: meta_table.loc[wc.samp]['azimuth_ref']
     threads: 1
     container:
         'docker://hreypar/scope-r:latest'
     script:
         '../analysis/map_azimuth.R'
+
 
 rule aggregate_features:
     output:
@@ -47,12 +49,13 @@ rule aggregate_features:
     input:
         'results/{dataset}/analysis/{samp}/{exptag}.map.h5seurat'
     params:
-        refname = lambda wc: samples.loc[wc.samp]['azimuth_ref']
+        refname = lambda wc: meta_table.loc[wc.samp]['azimuth_ref']
     threads: 1
     container:
         'docker://hreypar/scope-r:latest'
     script:
         '../analysis/aggregate_features.R'
+
 
 rule sctransform:
     output:
@@ -60,7 +63,7 @@ rule sctransform:
     input:
         'results/{dataset}/analysis/{samp}/{exptag}.agg.h5seurat'
     params:
-        refname = lambda wc: samples.loc[wc.samp]['azimuth_ref']
+        refname = lambda wc: meta_table.loc[wc.samp]['azimuth_ref']
     threads: 1
     container:
         'docker://hreypar/scope-r:latest'

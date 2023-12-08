@@ -31,8 +31,8 @@ rule sra_to_fastq:
     conda:
         "../envs/sra_data.yaml"
     output:
-        temp("results/{dataset}/fastq/{samp}/{sra_run}_1.fastq.gz"),
-        temp("results/{dataset}/fastq/{samp}/{sra_run}_2.fastq.gz")
+        "results/{dataset}/fastq/{samp}/{sra_run}_1.fastq.gz",
+        "results/{dataset}/fastq/{samp}/{sra_run}_2.fastq.gz"
     input:
         rules.prefetch_sra.output
     params:

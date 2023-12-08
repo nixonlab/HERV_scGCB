@@ -12,7 +12,6 @@ rule cell_qc:
         counts_mtx = rules.align_multi_starsolo.output[1],
         barcodes_tsv = rules.align_multi_starsolo.output[2],
         features_tsv = rules.align_multi_starsolo.output[3]
-#        inst_deps = rules.install_deps_Renv.output
     container:
         'docker://hreypar/scope-r:latest'
     script:
@@ -25,10 +24,9 @@ rule annotate_celltypes_azimuth:
         mapped_seurat_rds = 'results/{dataset}/canonicalQC/{samp}/tx_seurat.mapped.rds' 
     input:
         seurat_rds = rules.cell_qc.output['seurat_rds']
-#        inst_deps = rules.install_deps_Renv.output
     params:
         thresh = config['annotate_celltypes_azimuth']['filter_threshold'],
-        refname = lambda wc: samples.loc[wc.samp]['azimuth_ref']
+        refname = lambda wc: meta_table.loc[wc.samp]['azimuth_ref']
     container:
         'docker://hreypar/scope-r:latest'
     script:

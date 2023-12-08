@@ -37,8 +37,8 @@ rule stellarscope_cellsort:
             {input.passBC_tsv}
         '''
 
-def get_strand_arg(wildcards):
-    stranded = lambda wc: samples.loc[wildcards.samp]['stranded']
+def get_strand_arg(wc):
+    stranded = meta_table.loc[wc.samp]['stranded']
     if stranded == "U": # handle the unstranded case
         return ""
     return f'--stranded_mode {stranded}'
