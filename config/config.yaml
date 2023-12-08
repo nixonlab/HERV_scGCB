@@ -72,6 +72,7 @@ align_multi_starsolo:
     cite_gex_PRJNA587486:
         soloType: "CB_UMI_Simple"
         readFilesCommand: "gunzip -c"
+        soloBarcodeReadLength: 101
         soloCBstart: 1
         soloCBlen: 16
         soloUMIstart: 17
@@ -96,6 +97,8 @@ align_multi_starsolo:
         soloCBlen: 16
         soloUMIstart: 17
         soloUMIlen: 10
+#        soloBarcodeMate: 1
+#        clip5pNbases: "39 -"
         soloStrand: "Reverse"
         outSAMunmapped: "Within"
         soloFeatures: "Gene SJ Velocyto"
