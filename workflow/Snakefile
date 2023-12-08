@@ -9,8 +9,7 @@ configfile: "config/config.yaml"
 # wildcard constraints
 #
 wildcard_constraints:
-    sra_run = "SRR[0-9]{6,9}",
-    dataset = "PRJNA\d+"
+    sra_run = "SRR[0-9]{6,9}"
 
 # include rules
 #
