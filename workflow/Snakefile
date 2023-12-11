@@ -28,3 +28,4 @@ rule all:
 #        ),
 #        expand('results/vdj_gex_PRJNA779703/analysis/{samp}/{exptag}.sct.h5seurat', samp=dsets.loc['vdj_gex_PRJNA779703']['sample'], exptag = modes
 #        )
+
